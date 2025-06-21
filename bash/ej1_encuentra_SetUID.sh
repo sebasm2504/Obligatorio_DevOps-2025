@@ -5,12 +5,14 @@ b=0
 c=0
 dir=.
 
-# Mientras la cantidad de parametros sea mayor a 0 se evaluan los parametros
+# Si la cantidad de parametros es mayor a 3 se sale directamente.
 
 if [ $# -gt 3 ] ; then
-	echo "Este script solo puede recibir un máximo de 3 parametros (-c -b y un directorio)
-	exit 2"
+	echo "Este script solo puede recibir un máximo de 3 parametros (-c -b y un directorio)"
+	exit 2
 fi	
+
+# Mientras la cantidad de parametros sea mayor a 0 se evaluan los parametros
 
 while [ $# -gt 0 ]
 do
@@ -43,7 +45,7 @@ done
 touch temp.txt
 
 #Se buscan los archivos en en el directorio indicado.
-busqueda=`find "$dir" -type f -perm -4000 -executable -perm -0001 2>/dev/null` 
+busqueda=`find "$dir" -type f -user root -perm -4000 -executable -perm -0001 2>/dev/null` 
 
 for arch in `echo $busqueda`
 do
@@ -70,7 +72,7 @@ then
 	do
 		`echo realpath "$linea"` >> "$logfile"
 	done
-	echo "Archivo de Log creado correctamente."
+	echo "Archivo de Log "$logfile" creado correctamente."
 fi
 
 tarname="backupsSetUID_$(date +%d-%m-%Y_%H-%M-%S).tar.gz"
@@ -82,5 +84,5 @@ tar -czf "$tarname" -T temp.txt
 rm temp.txt
 
 
-echo "Se generó el archivo $logfile"
+echo "Se generó el archivo $tarname"
 exit 0
