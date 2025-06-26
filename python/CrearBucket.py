@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import boto3
 import sys
 import os
@@ -23,6 +25,7 @@ bucket_name = 'el-maligno-327041-325301'
 object_name = "Log_"+datetime.now().strftime("%d-%m-%Y")
 try:
     boto3.client('s3').create_bucket(Bucket=bucket_name)
+    print("Bucket creado correctamente")
 except boto3.exceptions.S3CreateError as e:
     print(f"Error creating bucket: {e}")
     exit(1)
